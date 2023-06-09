@@ -8,21 +8,23 @@
           <div class="text-gray-300 font-bold text-xl">Inngest SDK</div>
         </div>
 
-        <div class="flex space-x-2 text-white bg-gray-600 py-1 px-3 rounded-md">
-          <span class="flex space-x-1">
-            <%= if @registered do %>
-              <.status class="fill-green-500 w-6 h-6" />
-              <span class="block">Connected to</span>
-            <% else %>
-              <.status class="fill-red-500 w-6 h-6 text-center" />
-              <span class="block">Not connected to</span>
-            <% end %>
-          </span>
+        <%= if @rendered do %>
+          <div class="flex space-x-2 text-white bg-gray-600 py-1 px-3 rounded-md">
+            <span class="flex space-x-2">
+              <%= if @connected do %>
+                <.status class="fill-green-500 w-6 h-6" />
+                <span class="block">Connected to</span>
+                <% else %>
+                <.status class="fill-red-500 w-6 h-6 text-center" />
+                <span class="block">Not connected to</span>
+                <% end %>
+            </span>
 
-          <span class="text-violet-300 font-semibold">Inngest Dev Server</span>
-          <span>on</span>
-          <span class="text-violet-300 font-semibold">127.0.0.1:8288</span>
-        </div>
+            <span class="text-violet-300 font-semibold">Inngest Dev Server</span>
+            <span>on</span>
+            <span class="text-violet-300 font-semibold">127.0.0.1:8288</span>
+          </div>
+        <% end %>
       </div>
     </div>
   </nav>

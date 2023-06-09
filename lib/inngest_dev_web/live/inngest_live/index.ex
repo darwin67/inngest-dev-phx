@@ -10,7 +10,9 @@ defmodule InngestDevWeb.InngestLive.Index do
       |> assign(
         sdk_version: Inngest.Config.sdk_version(),
         functions: [],
-        registered: false
+        registered: false,
+        connected: false,
+        rendered: false
       )
 
     socket = if connected?(socket), do: load_data(socket), else: socket
@@ -21,17 +23,19 @@ defmodule InngestDevWeb.InngestLive.Index do
   defp load_data(socket) do
     case Inngest.Client.dev_info() do
       {:ok, %{"handlers" => nil, "functions" => nil} = _body} ->
-        socket |> assign(registered: false)
+        socket |> assign(registered: false, connected: true)
 
       {:ok, %{"handlers" => _handlers, "functions" => _functions}} ->
         socket
         |> assign(
           # functions: functions |> Enum.map(&Inngest.Function.from/1),
-          registered: true
+          registered: true,
+          connected: true
         )
 
       {:error, _} ->
-        socket |> assign(registered: false)
+        socket |> assign(registered: false, connected: false)
     end
+    |> assign(rendered: true)
   end
 end

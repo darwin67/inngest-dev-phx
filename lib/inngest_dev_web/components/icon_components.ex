@@ -5,7 +5,7 @@ defmodule InngestDevWeb.IconComponents do
     ~H"""
     <span class={[@class]}>
       <svg>
-        <circle stroke="none" cx="10" cy="10" r="10">
+        <circle stroke="none" cx="12" cy="12" r="12">
           <animate
             attributeName="opacity"
             dur="1s"
