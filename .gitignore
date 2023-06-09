@@ -35,3 +35,4 @@ inngest_dev-*.tar
 npm-debug.log
 /assets/node_modules/
 
+/.direnv/
