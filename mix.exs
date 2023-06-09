@@ -47,7 +47,7 @@ defmodule InngestDev.MixProject do
       {:plug_cowboy, "~> 2.5"},
 
       # inngest package
-      {:inngest, path: "../../"}
+      {:inngest, path: "../ex-inngest"}
     ]
   end
 
