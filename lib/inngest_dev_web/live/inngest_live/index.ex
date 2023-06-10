@@ -21,14 +21,19 @@ defmodule InngestDevWeb.InngestLive.Index do
   end
 
   defp load_data(socket) do
+    # register function
+    Inngest.Client.register([
+      InngestDev.Inngest.Simple
+    ])
+
     case Inngest.Client.dev_info() do
       {:ok, %{"handlers" => nil, "functions" => nil} = _body} ->
         socket |> assign(registered: false, connected: true)
 
-      {:ok, %{"handlers" => _handlers, "functions" => _functions}} ->
+      {:ok, %{"handlers" => _handlers, "functions" => functions}} ->
         socket
         |> assign(
-          # functions: functions |> Enum.map(&Inngest.Function.from/1),
+          functions: functions |> Enum.map(&Inngest.Function.from/1),
           registered: true,
           connected: true
         )
