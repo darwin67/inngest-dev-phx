@@ -1,5 +1,6 @@
 defmodule InngestDevWeb.Router do
   use InngestDevWeb, :router
+  use Inngest.Router, :phoenix
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -19,7 +20,7 @@ defmodule InngestDevWeb.Router do
 
     get "/", PageController, :home
 
-    live "/api/inngest", InngestLive.Index, :index
+    inngest("/api/inngest", funcs: [InngestDev.Inngest.Simple])
   end
 
   # Other scopes may use custom stacks.
