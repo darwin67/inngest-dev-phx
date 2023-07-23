@@ -3,30 +3,30 @@ defmodule InngestDevWeb.Router do
   use Inngest.Router, :phoenix
 
   pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, html: {InngestDevWeb.Layouts, :root}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
+    plug(:accepts, ["html"])
+    plug(:fetch_session)
+    plug(:fetch_live_flash)
+    plug(:put_root_layout, html: {InngestDevWeb.Layouts, :root})
+    plug(:protect_from_forgery)
+    plug(:put_secure_browser_headers)
   end
 
   pipeline :api do
-    plug :accepts, ["json"]
+    plug(:accepts, ["json"])
   end
 
   scope "/", InngestDevWeb do
-    pipe_through :browser
+    pipe_through(:browser)
 
-    get "/", PageController, :home
-
-    inngest("/api/inngest", funcs: [InngestDev.Inngest.Simple])
+    get("/", PageController, :home)
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", InngestDevWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", InngestDevWeb do
+    pipe_through [:api]
+
+    inngest("/inngest", path: "lib/inngest_dev/inngest/**/*.ex")
+  end
 
   # Enable LiveDashboard in development
   if Application.compile_env(:inngest_dev, :dev_routes) do
@@ -38,9 +38,9 @@ defmodule InngestDevWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/dev" do
-      pipe_through :browser
+      pipe_through(:browser)
 
-      live_dashboard "/dashboard", metrics: InngestDevWeb.Telemetry
+      live_dashboard("/dashboard", metrics: InngestDevWeb.Telemetry)
     end
   end
 end
