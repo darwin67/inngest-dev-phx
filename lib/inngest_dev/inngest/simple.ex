@@ -1,39 +1,33 @@
 defmodule InngestDev.Inngest.Simple do
-  use Inngest.Function,
-    name: "test func",
-    event: "test/event"
+  use Inngest.Function
 
-  run "test 1st run" do
-    {:ok, %{run: "do something"}}
-  end
+  # The id and name of the function
+  @func %FnOpts{id: "test", name: "Test"}
+  # The event this function will react to
+  @trigger %Trigger{event: "test/hello"}
 
-  step "test 1st step" do
-    {:ok, %{hello: "world"}}
-  end
+  @impl true
+  def exec(ctx, %{step: step} = _input) do
+    IO.inspect("Starting function...")
 
-  sleep("2s")
+    # A return value wrapped in a `step` are memorized, meaning
+    # it's guaranteed to be idempotent.
+    # if it fails, it'll be retried.
+    %{greet: greet} =
+      step.run(ctx, "step1", fn ->
+        %{greet: "hello"}
+      end)
 
-  step "test 2nd step" do
-    {:ok, %{yo: "lo"}}
-  end
+    # Sleeping will pause the execution from running, and function
+    # will be reinvoked when time is up.
+    step.sleep(ctx, "wait-a-little", "10s")
 
-  sleep("2s")
-  # sleep "until 1m later" do
-  #   "2023-07-18T07:31:00Z"
-  # end
+    %{name: name} =
+      step.run(ctx, "retrieve-user", fn ->
+        # retrieve user from here
+        %{name: "Darwin"}
+      end)
 
-  step "test 3rd - state accumulate" do
-    {:ok, %{result: "ok"}}
-  end
-
-  # wait_for_event "test/wait" do
-  #   match = "data.yo"
-  #   [timeout: "1d", if: "event.#{match} == async.#{match}"]
-  # end
-
-  # wait_for_event "test/wait", do: [timeout: "1d", match: "data.yo"]
-
-  run "result", %{data: data} do
-    {:ok, data}
+    {:ok, %{greetings: "#{greet} #{name}"}}
   end
 end
