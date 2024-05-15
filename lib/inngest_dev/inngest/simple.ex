@@ -13,16 +13,17 @@ defmodule InngestDev.Inngest.Simple do
     # A return value wrapped in a `step` are memorized, meaning
     # it's guaranteed to be idempotent.
     # if it fails, it'll be retried.
-    %{greet: greet} =
+    %{"greet" => greet} =
       step.run(ctx, "step1", fn ->
         %{greet: "hello"}
       end)
+      |> IO.inspect()
 
     # Sleeping will pause the execution from running, and function
     # will be reinvoked when time is up.
     step.sleep(ctx, "wait-a-little", "10s")
 
-    %{name: name} =
+    %{"name" => name} =
       step.run(ctx, "retrieve-user", fn ->
         # retrieve user from here
         %{name: "Darwin"}

@@ -48,6 +48,7 @@ defmodule InngestDev.MixProject do
 
       # inngest package
       {:inngest, "~> 0.2"}
+      # {:inngest, path: "../inngest-ex"}
     ]
   end
 
