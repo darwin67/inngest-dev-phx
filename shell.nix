@@ -1,9 +1,6 @@
-{ pkgs ? import (fetchTarball
-  "https://github.com/NixOS/nixpkgs/archive/refs/tags/23.05.tar.gz") { } }:
+let pkgs = import <nixos-23.11> { };
 
-with pkgs;
-
-mkShell {
+in pkgs.mkShell {
   buildInputs = [
     # Elixir
     pkgs.elixir
